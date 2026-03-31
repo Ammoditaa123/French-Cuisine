@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>L'Atelier Culinaire — Une Expérience Française</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #fdf6ec;
+    --gold: #c8a951;
+    --gold-light: #e8c96a;
+    --burgundy: #6b1a2a;
+    --deep-navy: #0d1b2a;
+    --sage: #7a8c6e;
+    --rose-pale: #f2d4c8;
+    --blue-roi: #1a3a5c;
+    --text-dark: #1a1208;
+    --text-muted: #6b5c3e;
+    --white-warm: #fefcf7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  #cursor {
+    position: fixed; width: 20px; height: 20px;
+    border: 2px solid var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 99999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.15s ease, background 0.2s, width 0.2s, height 0.2s;
+  }
+  #cursor.hover { width: 40px; height: 40px; background: rgba(200,169,81,0.2); }
+  #cursor-dot {
+    position: fixed; width: 6px; height: 6px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 99999;
+    transform: translate(-50%,-50%);
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0d1b2a 0%, #1a3a5c 40%, #6b1a2a 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg-pattern {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(200,169,81,0.08) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(242,212,200,0.06) 0%, transparent 40%),
+                      radial-gradient(circle at 60% 80%, rgba(107,26,42,0.15) 0%, transparent 40%);
+  }
+
+  .fleur-de-lis-bg {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='80' viewBox='0 0 60 80'%3E%3Cpath d='M30 5 C30 5 20 15 20 25 C20 35 28 38 30 40 C32 38 40 35 40 25 C40 15 30 5 30 5Z M30 40 C30 40 15 45 12 55 C9 65 18 72 30 70 C42 72 51 65 48 55 C45 45 30 40 30 40Z M22 55 L18 75 L30 68 L42 75 L38 55' fill='%23c8a951'/%3E%3C/svg%3E");
+    background-size: 60px 80px;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 2rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.4em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideUp 1s ease 0.2s both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 900; color: var(--white-warm);
+    line-height: 0.9; letter-spacing: -0.02em;
+    animation: fadeSlideUp 1s ease 0.4s both;
+  }
+
+  .hero-title em {
+    color: var(--gold-light); font-style: italic;
+    display: block; font-size: 0.7em;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: rgba(253,246,236,0.7); margin-top: 1.5rem;
+    font-style: italic;
+    animation: fadeSlideUp 1s ease 0.6s both;
+  }
+
+  /* Galette des Rois Interactive */
+  #galette-stage {
+    margin: 3rem auto 0;
+    width: clamp(260px, 50vw, 480px);
+    position: relative;
+    animation: fadeSlideUp 1.2s ease 0.8s both;
+  }
+
+  .galette-container {
+    position: relative; cursor: pointer;
+  }
+
+  .galette-plate {
+    width: 100%; aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 40% 35%, #f5f0e8 0%, #e8dcc8 40%, #d4c5a0 100%);
+    box-shadow:
+      0 0 0 12px rgba(200,169,81,0.3),
+      0 0 0 20px rgba(200,169,81,0.1),
+      0 30px 80px rgba(0,0,0,0.6),
+      inset 0 -20px 40px rgba(150,120,60,0.4);
+    position: relative; overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .galette-container:hover .galette-plate { transform: scale(1.04) rotate(2deg); }
+
+  .galette-pattern {
+    position: absolute; inset: 15%;
+    border-radius: 50%;
+    background: repeating-conic-gradient(
+      from 0deg,
+      rgba(200,169,81,0.25) 0deg 10deg,
+      transparent 10deg 20deg
+    );
+  }
+
+  .galette-cross {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .galette-cross::before, .galette-cross::after {
+    content: ''; position: absolute;
+    background: linear-gradient(90deg, transparent, rgba(200,169,81,0.5), transparent);
+    border-radius: 4px;
+  }
+  .galette-cross::before { width: 80%; height: 3px; }
+  .galette-cross::after { width: 3px; height: 80%; }
+
+  .galette-crown {
+    position: absolute; top: -40px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    animation: floatCrown 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(200,169,81,0.8));
+  }
+
+  .galette-slices {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .slice {
+    position: absolute; width: 50%; height: 50%;
+    top: 0; left: 50%;
+    transform-origin: 0% 100%;
+    cursor: pointer;
+    transition: transform 0.4s ease, filter 0.3s;
+  }
+
+  .slice:hover { filter: brightness(1.15); }
+  .slice-inner {
+    position: absolute; inset: 0;
+    border-top-right-radius: 200px 200px;
+    border: 1px solid rgba(200,169,81,0.4);
+    transition: background 0.3s;
+  }
+
+  .slice:nth-child(1) { transform: rotate(0deg); }
+  .slice:nth-child(2) { transform: rotate(45deg); }
+  .slice:nth-child(3) { transform: rotate(90deg); }
+  .slice:nth-child(4) { transform: rotate(135deg); }
+  .slice:nth-child(5) { transform: rotate(180deg); }
+  .slice:nth-child(6) { transform: rotate(225deg); }
+  .slice:nth-child(7) { transform: rotate(270deg); }
+  .slice:nth-child(8) { transform: rotate(315deg); }
+
+  .galette-cta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    color: var(--gold); margin-top: 1.5rem;
+    text-align: center; text-transform: uppercase;
+    animation: pulse 2s ease infinite;
+  }
+
+  /* RESULT MODAL */
+  #result-modal {
+    position: fixed; inset: 0; z-index: 1000;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(13,27,42,0.85); backdrop-filter: blur(12px);
+  }
+  #result-modal.show { display: flex; }
+
+  .modal-card {
+    background: linear-gradient(135deg, #0d1b2a, #1a3a5c);
+    border: 1px solid rgba(200,169,81,0.4);
+    border-radius: 24px; padding: 3rem;
+    max-width: 480px; width: 90%; text-align: center;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6), inset 0 1px 0 rgba(200,169,81,0.2);
+    animation: modalPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .modal-emoji { font-size: 5rem; display: block; margin-bottom: 1rem; }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem; color: var(--gold-light);
+    margin-bottom: 0.5rem;
+  }
+  .modal-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: rgba(253,246,236,0.8);
+    font-style: italic; margin-bottom: 2rem;
+  }
+  .modal-btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--deep-navy); border: none;
+    padding: 0.85rem 2.5rem; border-radius: 50px;
+    font-family: 'Space Mono', monospace; font-size: 0.75rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; font-weight: 700;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(200,169,81,0.4); }
+
+  /* SCROLL INDICATOR */
+  .scroll-indicator {
+    position: absolute; bottom: 3rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    animation: fadeSlideUp 1s ease 1.5s both;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+  .scroll-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.3em;
+    color: var(--gold); text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  /* ── NAV ── */
+  #nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    padding: 1.5rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.4s, backdrop-filter 0.4s;
+  }
+  #nav.scrolled {
+    background: rgba(13,27,42,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(200,169,81,0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--gold-light); text-decoration: none;
+  }
+  .nav-logo span { font-style: italic; color: var(--white-warm); }
+
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(253,246,236,0.7); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  /* DARK MODE TOGGLE */
+  #dark-toggle {
+    background: rgba(200,169,81,0.15);
+    border: 1px solid rgba(200,169,81,0.3);
+    color: var(--gold-light); padding: 0.5rem 1.2rem;
+    border-radius: 50px; cursor: pointer;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.1em; transition: all 0.3s;
+  }
+  #dark-toggle:hover { background: rgba(200,169,81,0.3); }
+
+  /* ── SECTION STYLES ── */
+  .section-divider {
+    height: 100px;
+    background: linear-gradient(to bottom, transparent, var(--cream));
+  }
+  .section-divider.dark-to-cream {
+    background: linear-gradient(to bottom, #0d1b2a, var(--cream));
+  }
+
+  /* CHAPTER HEADER */
+  .chapter-header {
+    text-align: center; padding: 5rem 2rem 3rem;
+    position: relative;
+  }
+  .chapter-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem; display: block;
+  }
+  .chapter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 900; line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+  .chapter-title em { font-style: italic; color: var(--burgundy); }
+  .chapter-desc {
+    font-size: 1.2rem; font-style: italic;
+    color: var(--text-muted); max-width: 600px;
+    margin: 1.5rem auto 0; line-height: 1.7;
+  }
+  .chapter-rule {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 2rem auto 0;
+  }
+
+  /* ── RECIPE CARDS ── */
+  .recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem; padding: 2rem 4rem 6rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+
+  .recipe-card {
+    background: var(--white-warm);
+    border-radius: 24px; overflow: hidden;
+    border: 1px solid rgba(200,169,81,0.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
+    cursor: pointer; position: relative;
+  }
+  .recipe-card:hover {
+    transform: translateY(-10px) rotate(-0.5deg);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  .recipe-img-wrap {
+    position: relative; height: 260px; overflow: hidden;
+  }
+  .recipe-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .recipe-card:hover .recipe-img-wrap img { transform: scale(1.08); }
+
+  .recipe-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(13,27,42,0.6) 100%);
+  }
+
+  .recipe-temp-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    background: rgba(200,169,81,0.9);
+    backdrop-filter: blur(8px);
+    color: var(--deep-navy); padding: 0.4rem 0.9rem;
+    border-radius: 50px; font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em; font-weight: 700;
+  }
+
+  .recipe-body { padding: 1.8rem; }
+
+  .recipe-region {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.5rem;
+  }
+
+  .recipe-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700;
+    line-height: 1.1; margin-bottom: 0.3rem;
+  }
+
+  .recipe-subtitle {
+    font-style: italic; color: var(--text-muted);
+    font-size: 0.95rem; margin-bottom: 1.2rem;
+  }
+
+  .recipe-ingredients {
+    background: rgba(200,169,81,0.08);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 1rem 1.2rem; margin-bottom: 1.2rem;
+  }
+
+  .ingredients-title {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.6rem;
+  }
+
+  .ingredients-list {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+
+  .ingredient-tag {
+    background: var(--white-warm); border: 1px solid rgba(200,169,81,0.3);
+    border-radius: 50px; padding: 0.2rem 0.7rem;
+    font-size: 0.82rem; color: var(--text-dark);
+    transition: background 0.2s, transform 0.2s;
+    cursor: default;
+    position: relative;
+  }
+  .ingredient-tag:hover {
+    background: var(--gold); color: var(--deep-navy);
+    transform: scale(1.05);
+  }
+  .ingredient-tag[data-fr]:hover::after {
+    content: attr(data-fr);
+    position: absolute; bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%);
+    background: var(--deep-navy); color: var(--gold-light);
+    padding: 0.3rem 0.7rem; border-radius: 8px;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    white-space: nowrap; z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .ingredient-tag[data-fr]:hover::before {
+    content: '';
+    position: absolute; bottom: calc(100% + 2px); left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--deep-navy);
+  }
+
+  .recipe-steps {
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+
+  .step-item {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+  }
+
+  .step-num {
+    width: 24px; height: 24px; min-width: 24px;
+    background: var(--burgundy); color: white;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700;
+  }
+
+  .step-text { font-size: 0.9rem; line-height: 1.5; color: var(--text-dark); }
+
+  .french-term {
+    color: var(--burgundy); font-style: italic;
+    cursor: help; border-bottom: 1px dashed var(--burgundy);
+    position: relative;
+  }
+  .french-term:hover::after {
+    content: attr(data-en);
+    position: absolute; bottom: calc(100% + 8px); left: 0;
+    background: var(--burgundy); color: white;
+    padding: 0.3rem 0.7rem; border-radius: 8px;
+    font-style: normal; font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; white-space: nowrap; z-index: 100;
+    box-shadow: 0 4px 12px rgba(107,26,42,0.4);
+  }
+
+  /* ── WINE CELLAR ── */
+  #wine-cellar {
+    background: linear-gradient(160deg, #0d1b2a 0%, #1a1208 60%, #2a0a12 100%);
+    padding: 0 0 6rem;
+    position: relative; overflow: hidden;
+  }
+
+  .wine-bg-pattern {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: radial-gradient(circle, rgba(200,169,81,1) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  #wine-cellar .chapter-tag { color: #e8c96a; }
+  #wine-cellar .chapter-title { color: var(--white-warm); }
+  #wine-cellar .chapter-title em { color: #e8c96a; }
+  #wine-cellar .chapter-desc { color: rgba(253,246,236,0.6); }
+
+  .wines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem; padding: 2rem 4rem 4rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+
+  .wine-card {
+    border-radius: 24px; overflow: hidden;
+    border: 1px solid rgba(200,169,81,0.2);
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(10px);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s;
+    cursor: pointer;
+  }
+  .wine-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(200,169,81,0.1);
+  }
+
+  .wine-img-wrap { position: relative; height: 240px; overflow: hidden; }
+  .wine-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .wine-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(13,27,42,0.85) 100%);
+  }
+
+  .wine-grape-badges {
+    position: absolute; bottom: 1rem; left: 1rem;
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+
+  .grape-badge {
+    background: rgba(200,169,81,0.85); color: var(--deep-navy);
+    padding: 0.25rem 0.6rem; border-radius: 50px;
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; font-weight: 700;
+  }
+
+  .wine-body { padding: 1.8rem; }
+
+  .wine-region {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(200,169,81,0.8); margin-bottom: 0.5rem;
+  }
+
+  .wine-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 700; color: var(--white-warm);
+    line-height: 1.1; margin-bottom: 0.5rem;
+  }
+
+  .wine-desc {
+    font-size: 0.92rem; color: rgba(253,246,236,0.65);
+    line-height: 1.6; font-style: italic; margin-bottom: 1.2rem;
+  }
+
+  .wine-process {
+    border-top: 1px solid rgba(200,169,81,0.15);
+    padding-top: 1.2rem;
+  }
+
+  .process-label {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.25em; color: rgba(200,169,81,0.7);
+    text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+
+  .process-steps {
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+
+  .process-step {
+    display: flex; gap: 0.8rem; align-items: center;
+    color: rgba(253,246,236,0.75); font-size: 0.87rem;
+  }
+
+  .process-icon { font-size: 1.1rem; }
+
+  /* Wine meter */
+  .wine-meters { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+  .wine-meter-row { display: flex; align-items: center; gap: 0.8rem; }
+  .wine-meter-label {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    color: rgba(200,169,81,0.7); width: 70px; flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+  .wine-meter-track {
+    flex: 1; height: 4px; background: rgba(255,255,255,0.1);
+    border-radius: 2px; overflow: hidden;
+  }
+  .wine-meter-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    transition: width 1s ease;
+  }
+
+  /* ── TRANSLATION TOOL ── */
+  #translator {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 600;
+  }
+
+  .translator-toggle {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 8px 30px rgba(200,169,81,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .translator-toggle:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(200,169,81,0.6); }
+
+  .translator-panel {
+    position: absolute; bottom: 70px; right: 0;
+    width: 340px;
+    background: rgba(13,27,42,0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(200,169,81,0.3);
+    border-radius: 20px; padding: 1.5rem;
+    display: none;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .translator-panel.open { display: block; animation: modalPop 0.3s ease; }
+
+  .translator-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1rem;
+  }
+  .translator-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--gold-light);
+    font-style: italic;
+  }
+  .translator-close {
+    background: none; border: none; color: rgba(253,246,236,0.5);
+    cursor: pointer; font-size: 1.2rem; line-height: 1;
+  }
+
+  .translator-input {
+    width: 100%; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(200,169,81,0.3); border-radius: 12px;
+    padding: 0.8rem 1rem; color: var(--white-warm);
+    font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+    outline: none; resize: none;
+    transition: border-color 0.2s;
+  }
+  .translator-input:focus { border-color: var(--gold); }
+
+  .translator-btn {
+    width: 100%; margin-top: 0.8rem;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--deep-navy); border: none; border-radius: 50px;
+    padding: 0.7rem; cursor: pointer;
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.15em; font-weight: 700;
+    transition: transform 0.2s;
+  }
+  .translator-btn:hover { transform: scale(1.02); }
+
+  .translator-result {
+    margin-top: 1rem; padding: 1rem;
+    background: rgba(200,169,81,0.1);
+    border-radius: 12px;
+    min-height: 60px;
+    font-style: italic; color: rgba(253,246,236,0.9);
+    font-size: 0.95rem; line-height: 1.6;
+    display: none;
+  }
+  .translator-result.show { display: block; animation: fadeSlideUp 0.3s ease; }
+
+  .quick-phrases {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(200,169,81,0.15);
+    padding-top: 1rem;
+  }
+  .quick-label {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.25em; color: rgba(200,169,81,0.6);
+    text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .quick-phrases-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .quick-phrase {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(200,169,81,0.2);
+    color: rgba(253,246,236,0.75); padding: 0.3rem 0.7rem;
+    border-radius: 50px; font-size: 0.78rem; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .quick-phrase:hover { background: rgba(200,169,81,0.2); color: var(--gold-light); }
+
+  /* ── GLOSSARY HUD ── */
+  #glossary-hud {
+    position: fixed; top: 50%; left: 2rem;
+    transform: translateY(-50%);
+    z-index: 400; width: 200px;
+    display: none;
+  }
+  @media (min-width: 1200px) { #glossary-hud { display: block; } }
+
+  .hud-card {
+    background: rgba(13,27,42,0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(200,169,81,0.25);
+    border-radius: 16px; padding: 1.2rem;
+  }
+  .hud-title {
+    font-family: 'Space Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.3em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 0.8rem;
+  }
+  .hud-terms { display: flex; flex-direction: column; gap: 0.5rem; }
+  .hud-term { display: flex; gap: 0.6rem; align-items: flex-start; }
+  .hud-fr { font-style: italic; color: var(--gold-light); font-size: 0.82rem; }
+  .hud-en { font-size: 0.75rem; color: rgba(253,246,236,0.55); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep-navy);
+    border-top: 1px solid rgba(200,169,81,0.2);
+    padding: 4rem 4rem 2rem;
+  }
+
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 900; color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .footer-tagline {
+    font-size: 0.9rem; color: rgba(253,246,236,0.5);
+    font-style: italic; margin-top: 0.5rem; line-height: 1.6;
+  }
+
+  .footer-col-title {
+    font-family: 'Space Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-links a {
+    color: rgba(253,246,236,0.6); text-decoration: none;
+    font-size: 0.9rem; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold-light); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(200,169,81,0.1);
+    padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-copy {
+    font-size: 0.8rem; color: rgba(253,246,236,0.3);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes floatCrown {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+
+  /* scroll reveal */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Stagger children */
+  .stagger > * { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .stagger.visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.1s; }
+  .stagger.visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.2s; }
+  .stagger.visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.3s; }
+  .stagger.visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.4s; }
+
+  /* ── FRANCE TRICOLOR ACCENT ── */
+  .tricolor-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #002395 33%, white 33% 67%, #ED2939 67%);
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .recipes-grid, .wines-grid { padding: 1rem 1.5rem 4rem; grid-template-columns: 1fr; }
+    #nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-title { font-size: clamp(2.5rem, 12vw, 5rem); }
+  }
+
+  /* ── MISC DECORATIVE ── */
+  .gold-divider {
+    display: flex; align-items: center; gap: 1rem;
+    max-width: 400px; margin: 0 auto 3rem;
+  }
+  .gold-divider-line { flex: 1; height: 1px; background: var(--gold); opacity: 0.4; }
+  .gold-divider-symbol { color: var(--gold); font-size: 1.2rem; }
+
+  /* confetti particles for king result */
+  .confetti-piece {
+    position: fixed; width: 10px; height: 10px;
+    border-radius: 2px; pointer-events: none;
+    z-index: 999; animation: confettiFall 3s ease-in forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── PAIRING SUGGESTION STRIP ── */
+  .pairing-strip {
+    background: linear-gradient(135deg, var(--burgundy), #4a0d1a);
+    color: var(--white-warm); text-align: center;
+    padding: 2rem 4rem;
+  }
+  .pairing-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-style: italic;
+  }
+  .pairing-text strong { color: var(--gold-light); }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-dot"></div>
+
+<!-- NAVBAR -->
+<nav id="nav">
+  <a href="#" class="nav-logo">L'<span>Atelier</span></a>
+  <ul class="nav-links">
+    <li><a href="#patisserie">La Pâtisserie</a></li>
+    <li><a href="#wine-cellar">La Cave</a></li>
+    <li><a href="#glossary">Glossaire</a></li>
+  </ul>
+  <button id="dark-toggle" onclick="toggleDark()">🌙 Mode Cave</button>
+</nav>
+
+<!-- GALETTE RESULT MODAL -->
+<div id="result-modal">
+  <div class="modal-card" id="modal-content">
+    <span class="modal-emoji" id="modal-emoji">👑</span>
+    <div class="modal-title" id="modal-title">Vous êtes le Roi !</div>
+    <div class="modal-subtitle" id="modal-subtitle">The hidden charm found you — you reign today!</div>
+    <button class="modal-btn" onclick="closeModal()">Merci ! Fermer</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="fleur-de-lis-bg"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Une Expérience Gastronomique · Classe de Français</div>
+    <h1 class="hero-title">
+      L'Atelier
+      <em>Culinaire</em>
+    </h1>
+    <p class="hero-subtitle">Découvrez les saveurs et traditions de la France à travers ses plats emblématiques</p>
+
+    <!-- GALETTE DES ROIS -->
+    <div id="galette-stage">
+      <div class="galette-crown">👑</div>
+      <div class="galette-container">
+        <div class="galette-plate">
+          <div class="galette-pattern"></div>
+          <div class="galette-cross"></div>
+          <div class="galette-slices" id="galette-slices">
+            <div class="slice" onclick="cutSlice(this, 1)"><div class="slice-inner" style="background:rgba(245,235,210,0.3)"></div></div>
+            <div class="slice" onclick="cutSlice(this, 2)"><div class="slice-inner" style="background:rgba(235,220,190,0.3)"></div></div>
+            <div class="slice" onclick="cutSlice(this, 3)"><div class="slice-inner" style="background:rgba(245,230,205,0.3)"></div></div>
+            <div class="slice" onclick="cutSlice(this, 4)"><div class="slice-inner" style="background:rgba(240,225,200,0.3)"></div></div>
+            <div class="slice" onclick="cutSlice(this, 5)"><div class="slice-inner" style="background:rgba(245,235,215,0.3)"></div></div>
+            <div class="slice" onclick="cutSlice(this, 6)"><div class="slice-inner" style="background:rgba(235,222,192,0.3)"></div></div>
+            <div class="slice" onclick="cutSlice(this, 7)"><div class="slice-inner" style="background:rgba(242,228,205,0.3)"></div></div>
+            <div class="slice" onclick="cutSlice(this, 8)"><div class="slice-inner" style="background:rgba(238,224,198,0.3)"></div></div>
+          </div>
+        </div>
+        <p class="galette-cta">✦ Cliquez sur une part pour trouver la fève ✦</p>
+      </div>
+      <div style="text-align:center; margin-top:1rem; font-size:0.8rem; color:rgba(200,169,81,0.7); font-style:italic; font-family:'Cormorant Garamond',serif;">
+        La Galette des Rois — Tradition de l'Épiphanie · Janvier
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-text">Défiler</div>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- TRICOLOR -->
+<div class="tricolor-bar"></div>
+
+<!-- SECTION DIVIDER -->
+<div class="section-divider dark-to-cream"></div>
+
+<!-- PATISSERIE SECTION -->
+<section id="patisserie">
+  <div class="chapter-header reveal">
+    <span class="chapter-tag">Premier Service</span>
+    <h2 class="chapter-title">La <em>Pâtisserie</em></h2>
+    <p class="chapter-desc">L'art subtil de la pâtisserie française — où chaque dessert raconte une histoire régionale d'exception.</p>
+    <div class="chapter-rule"></div>
+  </div>
+
+  <div class="gold-divider">
+    <div class="gold-divider-line"></div>
+    <div class="gold-divider-symbol">✦</div>
+    <div class="gold-divider-line"></div>
+  </div>
+
+  <div class="recipes-grid stagger" id="patisserie-grid">
+
+    <!-- TARTE TATIN -->
+    <div class="recipe-card" onclick="expandCard(this)">
+      <div class="recipe-img-wrap">
+        <img src="https://www.thepuretaste.com/wp-content/uploads/2023/04/Tarte-Tatin-Recipe.jpg"
+             alt="Tarte Tatin" loading="lazy"
+             onerror="this.src='https://images.unsplash.com/photo-1601000848808-a3e2db5e5e1e?w=800'" />
+        <div class="recipe-img-overlay"></div>
+        <div class="recipe-temp-badge">🌡 180°C · 40 min</div>
+      </div>
+      <div class="recipe-body">
+        <div class="recipe-region">Normandie · Sologne</div>
+        <div class="recipe-name">Tarte Tatin</div>
+        <div class="recipe-subtitle">La tarte aux pommes caramélisées renversée</div>
+        <div class="recipe-ingredients">
+          <div class="ingredients-title">Les Ingrédients</div>
+          <ul class="ingredients-list">
+            <li class="ingredient-tag" data-fr="Pommes → 'Pommes'">6 Apples</li>
+            <li class="ingredient-tag" data-fr="Sucre → 'Sugar'">150g Sugar</li>
+            <li class="ingredient-tag" data-fr="Beurre → 'Butter'">100g Butter</li>
+            <li class="ingredient-tag" data-fr="Pâte brisée → 'Shortcrust'">Shortcrust Pastry</li>
+          </ul>
+        </div>
+        <div class="recipe-steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text"><span class="french-term" data-en="Caramelize">Caraméliser</span> the sugar and butter in an oven-safe pan until golden amber.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text"><span class="french-term" data-en="Peel & slice">Éplucher</span> the apples and arrange them tightly over the caramel.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text">Cover with pastry dough, <span class="french-term" data-en="bake">enfourner</span> at 180°C for 35–40 minutes until golden.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-text">Let cool 5 min then <span class="french-term" data-en="flip / unmold">démouler</span> — invert onto a serving plate. C'est magnifique !</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRÈME BRÛLÉE -->
+    <div class="recipe-card" onclick="expandCard(this)">
+      <div class="recipe-img-wrap">
+        <img src="https://www.juliascuisine.com/wp-content/uploads/2021/08/creme-brulee-1.jpg"
+             alt="Crème Brûlée" loading="lazy"
+             onerror="this.src='https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800'" />
+        <div class="recipe-img-overlay"></div>
+        <div class="recipe-temp-badge">🌡 150°C · 45 min</div>
+      </div>
+      <div class="recipe-body">
+        <div class="recipe-region">Cuisine Classique · Paris</div>
+        <div class="recipe-name">Crème Brûlée</div>
+        <div class="recipe-subtitle">Crème vanillée, croûte de sucre caramélisé</div>
+        <div class="recipe-ingredients">
+          <div class="ingredients-title">Les Ingrédients</div>
+          <ul class="ingredients-list">
+            <li class="ingredient-tag" data-fr="Crème entière → 'Heavy cream'">500ml Cream</li>
+            <li class="ingredient-tag" data-fr="Jaune d'œuf → 'Egg yolk'">5 Egg Yolks</li>
+            <li class="ingredient-tag" data-fr="Gousse de vanille → 'Vanilla bean'">Vanilla Bean</li>
+            <li class="ingredient-tag" data-fr="Sucre roux → 'Brown sugar'">Brown Sugar</li>
+          </ul>
+        </div>
+        <div class="recipe-steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text"><span class="french-term" data-en="Split & scrape">Fendre</span> the vanilla bean, steep in warm cream for 15 minutes.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text"><span class="french-term" data-en="Whisk">Fouetter</span> egg yolks with sugar, slowly blend in the warm cream.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text"><span class="french-term" data-en="Fill & bake">Enfourner</span> in ramekins au bain-marie at 150°C for 40–45 minutes.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-text"><span class="french-term" data-en="Torch / caramelize">Flamber</span> a thin sugar crust with a torch just before serving. 🔥</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KOUIGN-AMANN -->
+    <div class="recipe-card" onclick="expandCard(this)">
+      <div class="recipe-img-wrap">
+        <img src="https://butterlovescompany.com/wp-content/uploads/2021/01/kouign-amann-recipe-6-683x1024.jpg"
+             alt="Kouign-Amann" loading="lazy"
+             onerror="this.src='https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=800'" />
+        <div class="recipe-img-overlay"></div>
+        <div class="recipe-temp-badge">🌡 200°C · 35 min</div>
+      </div>
+      <div class="recipe-body">
+        <div class="recipe-region">Bretagne · Douarnenez</div>
+        <div class="recipe-name">Kouign-Amann</div>
+        <div class="recipe-subtitle">Gâteau breton au beurre caramélisé</div>
+        <div class="recipe-ingredients">
+          <div class="ingredients-title">Les Ingrédients</div>
+          <ul class="ingredients-list">
+            <li class="ingredient-tag" data-fr="Farine → 'Flour'">250g Flour</li>
+            <li class="ingredient-tag" data-fr="Beurre salé → 'Salted butter'">200g Salted Butter</li>
+            <li class="ingredient-tag" data-fr="Sucre → 'Sugar'">200g Sugar</li>
+            <li class="ingredient-tag" data-fr="Levure → 'Yeast'">Yeast</li>
+          </ul>
+        </div>
+        <div class="recipe-steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text"><span class="french-term" data-en="Knead the dough">Pétrir</span> flour, water, salt and yeast into a soft bread dough. Prove for 1 hour.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text"><span class="french-term" data-en="Laminate">Feuilletez</span> cold butter into the dough by folding (like a rough croissant).</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text">Sprinkle sugar generously and press into a buttered cake tin.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-text"><span class="french-term" data-en="Bake golden">Cuire</span> at 200°C until deeply caramelized — the sugar should bubble!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAR BRETON -->
+    <div class="recipe-card" onclick="expandCard(this)">
+      <div class="recipe-img-wrap">
+        <img src="https://www.easymeals.fr/wp-content/uploads/2020/12/far-breton-scaled.jpg"
+             alt="Far Breton" loading="lazy"
+             onerror="this.src='https://images.unsplash.com/photo-1625938143396-ae17db3f3be3?w=800'" />
+        <div class="recipe-img-overlay"></div>
+        <div class="recipe-temp-badge">🌡 200°C · 45 min</div>
+      </div>
+      <div class="recipe-body">
+        <div class="recipe-region">Bretagne · Tradition Rurale</div>
+        <div class="recipe-name">Far Breton</div>
+        <div class="recipe-subtitle">Flan aux pruneaux, recette familiale bretonne</div>
+        <div class="recipe-ingredients">
+          <div class="ingredients-title">Les Ingrédients</div>
+          <ul class="ingredients-list">
+            <li class="ingredient-tag" data-fr="Farine → 'Flour'">200g Flour</li>
+            <li class="ingredient-tag" data-fr="Sucre → 'Sugar'">150g Sugar</li>
+            <li class="ingredient-tag" data-fr="Oeufs → 'Eggs'">4 Eggs</li>
+            <li class="ingredient-tag" data-fr="Lait entier → 'Whole milk'">750ml Milk</li>
+            <li class="ingredient-tag" data-fr="Pruneaux → 'Prunes'">200g Prunes</li>
+          </ul>
+        </div>
+        <div class="recipe-steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-text"><span class="french-term" data-en="Soak">Faire tremper</span> the prunes in warm tea or rum for 30 minutes to plump.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-text"><span class="french-term" data-en="Whisk / blend">Mélanger</span> flour, sugar, beaten eggs and milk until perfectly smooth.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-text">Butter the mold, arrange prunes, pour batter over them gently.</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-text"><span class="french-term" data-en="Bake until set">Cuire</span> at 200°C until the top is dark and the custard is set. Serve cool.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /recipes-grid -->
+</section>
+
+<!-- PAIRING STRIP -->
+<div class="pairing-strip reveal">
+  <p class="pairing-text">
+    <strong>Accord Parfait —</strong>
+    Pour sublimer votre Tarte Tatin, choisissez un <strong>Coteaux du Layon</strong> légèrement moelleux.
+    La Crème Brûlée appelle un <strong>Sauternes</strong> d'exception. Bon appétit ! 🍷
+  </p>
+</div>
+
+<!-- WINE CELLAR -->
+<section id="wine-cellar">
+  <div class="wine-bg-pattern"></div>
+
+  <div class="chapter-header reveal">
+    <span class="chapter-tag">Deuxième Service</span>
+    <h2 class="chapter-title" style="color:var(--white-warm)">La <em>Cave</em></h2>
+    <p class="chapter-desc" style="color:rgba(253,246,236,0.65)">Des vins d'exception issus des terroirs les plus nobles du Midi et de la Provence.</p>
+    <div class="chapter-rule"></div>
+  </div>
+
+  <div class="wines-grid stagger" id="wines-grid">
+
+    <!-- CHÂTEAUNEUF-DU-PAPE -->
+    <div class="wine-card" onclick="expandWine(this)">
+      <div class="wine-img-wrap">
+        <img src="https://www.pierre-amadieu.com/images/vins/chateauneuf-du-pape-rouge-gigondas.jpg"
+             alt="Châteauneuf-du-Pape" loading="lazy"
+             onerror="this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800'" />
+        <div class="wine-img-overlay"></div>
+        <div class="wine-grape-badges">
+          <span class="grape-badge">Grenache</span>
+          <span class="grape-badge">Syrah</span>
+          <span class="grape-badge">Mourvèdre</span>
+        </div>
+      </div>
+      <div class="wine-body">
+        <div class="wine-region">Vallée du Rhône · AOC</div>
+        <div class="wine-name">Châteauneuf-du-Pape</div>
+        <div class="wine-desc">Le roi des vins du Rhône — riche en fruits noirs, épices et garrigue, avec une finale veloutée d'exception.</div>
+        <div class="wine-meters">
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Tanins</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:80%"></div></div>
+          </div>
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Corps</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:90%"></div></div>
+          </div>
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Alcool</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:85%"></div></div>
+          </div>
+        </div>
+        <div class="wine-process">
+          <div class="process-label">Vinification</div>
+          <div class="process-steps">
+            <div class="process-step"><span class="process-icon">🍇</span><span><span class="french-term" data-en="Harvest">Vendanges</span> manuelles en septembre</span></div>
+            <div class="process-step"><span class="process-icon">🪣</span><span><span class="french-term" data-en="Maceration">Macération</span> traditionnelle 3–4 semaines</span></div>
+            <div class="process-step"><span class="process-icon">🛢</span><span><span class="french-term" data-en="Oak aging">Élevage</span> en fûts de chêne, 18 mois</span></div>
+            <div class="process-step"><span class="process-icon">🍾</span><span><span class="french-term" data-en="Bottling">Mise en bouteille</span> après assemblage</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROVENCE ROSÉ -->
+    <div class="wine-card" onclick="expandWine(this)">
+      <div class="wine-img-wrap">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
+             alt="Provence Rosé" loading="lazy"
+             onerror="this.src='https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800'" />
+        <div class="wine-img-overlay"></div>
+        <div class="wine-grape-badges">
+          <span class="grape-badge">Grenache</span>
+          <span class="grape-badge">Cinsault</span>
+          <span class="grape-badge">Syrah</span>
+        </div>
+      </div>
+      <div class="wine-body">
+        <div class="wine-region">Provence · Côtes de Provence AOC</div>
+        <div class="wine-name">Rosé de Provence</div>
+        <div class="wine-desc">La couleur rose pâle caractéristique, obtenue par pressurage direct — frais, floral, idéal pour l'été méditerranéen.</div>
+        <div class="wine-meters">
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Fraîcheur</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:90%"></div></div>
+          </div>
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Légèreté</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:85%"></div></div>
+          </div>
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Arômes</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:75%"></div></div>
+          </div>
+        </div>
+        <div class="wine-process">
+          <div class="process-label">Technique : Pressurage Direct</div>
+          <div class="process-steps">
+            <div class="process-step"><span class="process-icon">🍇</span><span><span class="french-term" data-en="Rapid pressing">Pressurage rapide</span> des raisins rouges</span></div>
+            <div class="process-step"><span class="process-icon">❄️</span><span><span class="french-term" data-en="Cold settling">Débourbage</span> à froid pour la clarté</span></div>
+            <div class="process-step"><span class="process-icon">🌡️</span><span><span class="french-term" data-en="Cool fermentation">Fermentation</span> en cuve à 16–18°C</span></div>
+            <div class="process-step"><span class="process-icon">🍾</span><span>Mise en bouteille tôt, printemps suivant</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MINERVOIS -->
+    <div class="wine-card" onclick="expandWine(this)">
+      <div class="wine-img-wrap">
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800&q=80"
+             alt="Minervois" loading="lazy" />
+        <div class="wine-img-overlay"></div>
+        <div class="wine-grape-badges">
+          <span class="grape-badge">Syrah</span>
+          <span class="grape-badge">Grenache</span>
+          <span class="grape-badge">Mourvèdre</span>
+        </div>
+      </div>
+      <div class="wine-body">
+        <div class="wine-region">Languedoc · AOC Minervois</div>
+        <div class="wine-name">Minervois</div>
+        <div class="wine-desc">Vins aux tanins profonds extraits par une macération longue — olives noires, thym, lavande sauvage.</div>
+        <div class="wine-meters">
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Tanins</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:75%"></div></div>
+          </div>
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Profondeur</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:80%"></div></div>
+          </div>
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Épices</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:70%"></div></div>
+          </div>
+        </div>
+        <div class="wine-process">
+          <div class="process-label">Technique : Macération Prolongée</div>
+          <div class="process-steps">
+            <div class="process-step"><span class="process-icon">🫗</span><span><span class="french-term" data-en="Long maceration">Macération</span> 2–3 semaines pour extraire les tanins</span></div>
+            <div class="process-step"><span class="process-icon">🔄</span><span><span class="french-term" data-en="Pump-over">Remontage</span> quotidien pour l'extraction</span></div>
+            <div class="process-step"><span class="process-icon">🛢</span><span>Élevage en foudres de chêne anciens</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CÔTES DU ROUSSILLON VILLAGES -->
+    <div class="wine-card" onclick="expandWine(this)">
+      <div class="wine-img-wrap">
+        <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&q=80"
+             alt="Côtes du Roussillon" loading="lazy" />
+        <div class="wine-img-overlay"></div>
+        <div class="wine-grape-badges">
+          <span class="grape-badge">Carignan</span>
+          <span class="grape-badge">Mourvèdre</span>
+          <span class="grape-badge">Grenache</span>
+        </div>
+      </div>
+      <div class="wine-body">
+        <div class="wine-region">Roussillon · AOC Villages</div>
+        <div class="wine-name">Côtes du Roussillon Villages</div>
+        <div class="wine-desc">L'assemblage audacieux du Carignan vieilles vignes et du Mourvèdre — charpenté, minéral, avec un caractère solaire inimitable.</div>
+        <div class="wine-meters">
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Structure</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:88%"></div></div>
+          </div>
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Minéralité</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:72%"></div></div>
+          </div>
+          <div class="wine-meter-row">
+            <div class="wine-meter-label">Vieillissement</div>
+            <div class="wine-meter-track"><div class="wine-meter-fill" style="width:82%"></div></div>
+          </div>
+        </div>
+        <div class="wine-process">
+          <div class="process-label">Technique : Assemblage</div>
+          <div class="process-steps">
+            <div class="process-step"><span class="process-icon">🍇</span><span>Carignan vieilles vignes (50+ ans) — âme du vin</span></div>
+            <div class="process-step"><span class="process-icon">🎨</span><span><span class="french-term" data-en="Blending / assemblage">Assemblage</span> avec Mourvèdre pour la structure</span></div>
+            <div class="process-step"><span class="process-icon">🛢</span><span>Élevage 12 mois, barriques bourguignonnes</span></div>
+            <div class="process-step"><span class="process-icon">🍾</span><span>Mise en bouteille sans filtration</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /wines-grid -->
+</section>
+
+<!-- GLOSSARY SECTION -->
+<section id="glossary" style="background: var(--cream); padding: 6rem 4rem;">
+  <div class="chapter-header reveal" style="padding-top:0">
+    <span class="chapter-tag">Pour les Étudiants</span>
+    <h2 class="chapter-title">Le <em>Glossaire</em></h2>
+    <p class="chapter-desc">Les termes culinaires et viticoles essentiels — votre passeport pour comprendre la gastronomie française.</p>
+    <div class="chapter-rule"></div>
+  </div>
+
+  <div class="reveal" style="max-width:1000px; margin:0 auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem;">
+
+    <div style="background:white; border-radius:20px; padding:1.8rem; border:1px solid rgba(200,169,81,0.2); box-shadow:0 4px 20px rgba(0,0,0,0.05);">
+      <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); margin-bottom:1rem; text-transform:uppercase;">🍰 Pâtisserie</div>
+      <div style="display:flex; flex-direction:column; gap:0.8rem;">
+        <div><strong style="color:var(--burgundy); font-style:italic">Feuilletage</strong> <span style="color:var(--text-muted)">→ Lamination / pastry layers</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Chantilly</strong> <span style="color:var(--text-muted)">→ Whipped cream</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Bain-marie</strong> <span style="color:var(--text-muted)">→ Water bath (gentle heat)</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Émulsion</strong> <span style="color:var(--text-muted)">→ Mixture of fat and liquid</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Caraméliser</strong> <span style="color:var(--text-muted)">→ To caramelize sugar</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Enfourner</strong> <span style="color:var(--text-muted)">→ To put in the oven</span></div>
+      </div>
+    </div>
+
+    <div style="background:white; border-radius:20px; padding:1.8rem; border:1px solid rgba(200,169,81,0.2); box-shadow:0 4px 20px rgba(0,0,0,0.05);">
+      <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); margin-bottom:1rem; text-transform:uppercase;">🍷 Viti-viniculture</div>
+      <div style="display:flex; flex-direction:column; gap:0.8rem;">
+        <div><strong style="color:var(--burgundy); font-style:italic">Macération</strong> <span style="color:var(--text-muted)">→ Soaking grape skins in juice</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Élevage</strong> <span style="color:var(--text-muted)">→ Wine aging / maturation</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Assemblage</strong> <span style="color:var(--text-muted)">→ Blending grape varieties</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Terroir</strong> <span style="color:var(--text-muted)">→ Soil, climate, environment</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Vendanges</strong> <span style="color:var(--text-muted)">→ Grape harvest</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Pressurage</strong> <span style="color:var(--text-muted)">→ Pressing the grapes</span></div>
+      </div>
+    </div>
+
+    <div style="background:white; border-radius:20px; padding:1.8rem; border:1px solid rgba(200,169,81,0.2); box-shadow:0 4px 20px rgba(0,0,0,0.05);">
+      <div style="font-family:'Space Mono',monospace; font-size:0.6rem; letter-spacing:0.3em; color:var(--gold); margin-bottom:1rem; text-transform:uppercase;">🥄 Techniques</div>
+      <div style="display:flex; flex-direction:column; gap:0.8rem;">
+        <div><strong style="color:var(--burgundy); font-style:italic">Pétrir</strong> <span style="color:var(--text-muted)">→ To knead dough</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Éplucher</strong> <span style="color:var(--text-muted)">→ To peel</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Fouetter</strong> <span style="color:var(--text-muted)">→ To whisk</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Démouler</strong> <span style="color:var(--text-muted)">→ To unmold / flip</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Tamiser</strong> <span style="color:var(--text-muted)">→ To sift flour</span></div>
+        <div><strong style="color:var(--burgundy); font-style:italic">Flamber</strong> <span style="color:var(--text-muted)">→ To flambé / torch</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">L'Atelier Culinaire</div>
+      <p class="footer-tagline">Un voyage gastronomique à travers les régions de France — traditions, saveurs et art de vivre à la française.</p>
+      <div style="margin-top:1.5rem; display:flex; gap:0.5rem;">
+        <div style="width:30px; height:4px; background:#002395; border-radius:2px;"></div>
+        <div style="width:30px; height:4px; background:white; border-radius:2px;"></div>
+        <div style="width:30px; height:4px; background:#ED2939; border-radius:2px;"></div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">La Pâtisserie</div>
+      <ul class="footer-links">
+        <li><a href="#patisserie">Tarte Tatin</a></li>
+        <li><a href="#patisserie">Crème Brûlée</a></li>
+        <li><a href="#patisserie">Kouign-Amann</a></li>
+        <li><a href="#patisserie">Far Breton</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">La Cave</div>
+      <ul class="footer-links">
+        <li><a href="#wine-cellar">Châteauneuf-du-Pape</a></li>
+        <li><a href="#wine-cellar">Rosé de Provence</a></li>
+        <li><a href="#wine-cellar">Minervois</a></li>
+        <li><a href="#wine-cellar">Côtes du Roussillon</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 L'Atelier Culinaire · Projet de Classe de Français</div>
+    <div style="display:flex; gap:1rem; font-family:'Space Mono',monospace; font-size:0.6rem; color:rgba(253,246,236,0.3);">
+      <span>🇫🇷 Fait avec amour</span>
+      <span>· Vive la France ·</span>
+      <span>Bon Appétit 🥂</span>
+    </div>
+  </div>
+</footer>
+
+<!-- GLOSSARY HUD -->
+<div id="glossary-hud">
+  <div class="hud-card">
+    <div class="hud-title">💬 Lexique du Jour</div>
+    <div class="hud-terms" id="hud-terms">
+      <div class="hud-term"><div><div class="hud-fr">Éplucher</div><div class="hud-en">To peel</div></div></div>
+      <div class="hud-term"><div><div class="hud-fr">Enfourner</div><div class="hud-en">To put in oven</div></div></div>
+      <div class="hud-term"><div><div class="hud-fr">Macération</div><div class="hud-en">Soaking/steeping</div></div></div>
+      <div class="hud-term"><div><div class="hud-fr">Terroir</div><div class="hud-en">Soil & environment</div></div></div>
+      <div class="hud-term"><div><div class="hud-fr">Assemblage</div><div class="hud-en">Blending wines</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSLATION TOOL -->
+<div id="translator">
+  <button class="translator-toggle" onclick="toggleTranslator()" title="French-English Translator">🇫🇷</button>
+  <div class="translator-panel" id="translator-panel">
+    <div class="translator-header">
+      <div class="translator-title">Traducteur Culinaire</div>
+      <button class="translator-close" onclick="toggleTranslator()">✕</button>
+    </div>
+    <textarea class="translator-input" id="translate-input" rows="3" placeholder="Entrez un mot ou une phrase française..."></textarea>
+    <button class="translator-btn" onclick="doTranslate()">✦ Traduire en Anglais</button>
+    <div class="translator-result" id="translate-result"></div>
+    <div class="quick-phrases">
+      <div class="quick-label">Termes Rapides</div>
+      <div class="quick-phrases-grid">
+        <div class="quick-phrase" onclick="quickTranslate('Bon appétit')">Bon appétit</div>
+        <div class="quick-phrase" onclick="quickTranslate('Mise en bouteille')">Mise en bouteille</div>
+        <div class="quick-phrase" onclick="quickTranslate('Éplucher')">Éplucher</div>
+        <div class="quick-phrase" onclick="quickTranslate('Feuilletage')">Feuilletage</div>
+        <div class="quick-phrase" onclick="quickTranslate('Terroir')">Terroir</div>
+        <div class="quick-phrase" onclick="quickTranslate('Vendanges')">Vendanges</div>
+        <div class="quick-phrase" onclick="quickTranslate('Caraméliser')">Caraméliser</div>
+        <div class="quick-phrase" onclick="quickTranslate('Bain-marie')">Bain-marie</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const cursorDot = document.getElementById('cursor-dot');
+let mouseX = 0, mouseY = 0, curX = 0, curY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursorDot.style.left = mouseX + 'px';
+  cursorDot.style.top = mouseY + 'px';
+});
+
+function animateCursor() {
+  curX += (mouseX - curX) * 0.12;
+  curY += (mouseY - curY) * 0.12;
+  cursor.style.left = curX + 'px';
+  cursor.style.top = curY + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, button, .recipe-card, .wine-card, .ingredient-tag, .quick-phrase, .slice').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+// ── NAVBAR SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── GALETTE GAME ──
+const FEVE_SLICE = Math.ceil(Math.random() * 8);
+let slicesCut = 0;
+
+function cutSlice(el, num) {
+  if (el.classList.contains('cut')) return;
+  el.classList.add('cut');
+  slicesCut++;
+
+  el.style.transform = `rotate(${(num-1)*45}deg) scale(0.85)`;
+  el.querySelector('.slice-inner').style.background = 'rgba(180,140,60,0.5)';
+
+  if (num === FEVE_SLICE) {
+    setTimeout(() => showResult(true), 400);
+  } else if (slicesCut >= 8) {
+    setTimeout(() => showResult(false), 400);
+  }
+}
+
+function showResult(isKing) {
+  const modal = document.getElementById('result-modal');
+  const emoji = document.getElementById('modal-emoji');
+  const title = document.getElementById('modal-title');
+  const subtitle = document.getElementById('modal-subtitle');
+
+  if (isKing) {
+    emoji.textContent = '👑';
+    title.textContent = 'Vous êtes le Roi !';
+    subtitle.textContent = 'La fève vous a trouvé — vous régnez aujourd\'hui ! You are the King for the day!';
+    launchConfetti();
+  } else {
+    emoji.textContent = '🥲';
+    title.textContent = 'Pas de chance !';
+    subtitle.textContent = 'La fève était bien cachée ! No charm found — try again next Epiphany!';
+  }
+  modal.classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('result-modal').classList.remove('show');
+  // Reset cake
+  document.querySelectorAll('.slice').forEach((s,i) => {
+    s.classList.remove('cut');
+    s.style.transform = `rotate(${i*45}deg)`;
+    s.querySelector('.slice-inner').style.background = 'rgba(245,235,210,0.3)';
+  });
+  slicesCut = 0;
+}
+
+function launchConfetti() {
+  const colors = ['#c8a951','#e8c96a','#ED2939','#002395','#fff','#f2d4c8'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `
+      left: ${Math.random()*100}vw;
+      top: -20px;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      transform: rotate(${Math.random()*360}deg);
+      animation-delay: ${Math.random()*2}s;
+      animation-duration: ${2 + Math.random()*2}s;
+      width: ${6 + Math.random()*12}px;
+      height: ${6 + Math.random()*12}px;
+    `;
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 5000);
+  }
+}
+
+// ── DARK MODE ──
+let darkMode = false;
+function toggleDark() {
+  darkMode = !darkMode;
+  document.body.style.filter = darkMode ? 'hue-rotate(200deg) brightness(0.9)' : '';
+  document.getElementById('dark-toggle').textContent = darkMode ? '☀️ Mode Jour' : '🌙 Mode Cave';
+}
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal, .stagger').forEach(el => observer.observe(el));
+
+// ── TRANSLATION TOOL ──
+const translations = {
+  'bon appétit': 'Enjoy your meal! / Good appetite! — The classic French phrase said before eating.',
+  'mise en bouteille': 'Bottling — The process of transferring wine from barrel or tank into bottles.',
+  'éplucher': 'To peel (fruits or vegetables) — e.g., "Éplucher les pommes" = peel the apples.',
+  'feuilletage': 'Laminated pastry / layering technique — creating many thin flaky layers with butter.',
+  'terroir': 'The complete natural environment (soil, climate, topography) of a vineyard that gives wine its character.',
+  'vendanges': 'Grape harvest — the annual picking of grapes, usually in September–October.',
+  'caraméliser': 'To caramelize — cooking sugar until it turns golden-brown and nutty.',
+  'bain-marie': 'Water bath — cooking a dish in a container set in hot water for gentle, even heat.',
+  'macération': 'Maceration — soaking grape skins in juice to extract color, flavor, and tannins.',
+  'élevage': 'Aging / maturation — the period a wine spends in barrels or tanks developing complexity.',
+  'assemblage': 'Blending — combining different grape varieties or barrels to create the final wine.',
+  'pétrir': 'To knead dough — working it until smooth and elastic.',
+  'fouetter': 'To whisk — beating quickly to incorporate air or blend ingredients.',
+  'démouler': 'To unmold — carefully removing a baked dish from its pan.',
+  'enfourner': 'To put in the oven / to bake.',
+  'flamber': 'To flambé — igniting alcohol in a dish, or using a torch to caramelize sugar.',
+  'fève': 'The hidden charm/bean inside a Galette des Rois — the finder becomes King or Queen!',
+  'galette des rois': 'King\'s Cake — a puff pastry eaten at Epiphany (January 6th) containing a hidden charm.',
+  'crème brûlée': 'Burnt cream — a vanilla custard dessert with a hard caramelized sugar crust on top.',
+  'tarte tatin': 'An upside-down caramelized apple tart, accidentally invented by the Tatin sisters.',
+  'kouign-amann': 'Butter cake — from Breton "kouign" (cake) + "amann" (butter). A rich, layered Breton pastry.',
+  'far breton': 'A dense Breton custard cake made with prunes — rustic and comforting.'
+};
+
+function doTranslate() {
+  const input = document.getElementById('translate-input').value.trim().toLowerCase();
+  const result = document.getElementById('translate-result');
+  if (!input) return;
+
+  let found = null;
+  for (const [key, val] of Object.entries(translations)) {
+    if (input.includes(key) || key.includes(input)) { found = val; break; }
+  }
+
+  result.textContent = found || `"${input}" — Try a French culinary or wine term! Use the quick phrases below for common terms.`;
+  result.classList.add('show');
+}
+
+function quickTranslate(term) {
+  document.getElementById('translate-input').value = term;
+  doTranslate();
+}
+
+function toggleTranslator() {
+  document.getElementById('translator-panel').classList.toggle('open');
+}
+
+document.getElementById('translate-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); doTranslate(); }
+});
+
+// ── CARD CLICK EFFECTS ──
+function expandCard(card) {
+  card.style.transform = card.style.transform.includes('scale(1.02)') ? '' : 'translateY(-10px) scale(1.02) rotate(0deg)';
+}
+function expandWine(card) {
+  card.style.transform = card.style.transform.includes('scale(1.02)') ? '' : 'translateY(-10px) scale(1.02)';
+}
+
+// ── HUD ROTATION ──
+const hudTermsList = [
+  { fr: 'Caraméliser', en: 'Caramelize' },
+  { fr: 'Feuilletage', en: 'Pastry layers' },
+  { fr: 'Macération', en: 'Grape steeping' },
+  { fr: 'Élevage', en: 'Wine aging' },
+  { fr: 'Fève', en: 'Hidden charm' },
+  { fr: 'Terroir', en: 'Soil & climate' },
+  { fr: 'Bain-marie', en: 'Water bath' },
+  { fr: 'Assemblage', en: 'Wine blending' },
+  { fr: 'Éplucher', en: 'To peel' },
+  { fr: 'Vendanges', en: 'Grape harvest' },
+];
+
+let hudOffset = 0;
+function rotateHUD() {
+  const hud = document.getElementById('hud-terms');
+  const terms = hudTermsList.slice(hudOffset % hudTermsList.length, (hudOffset % hudTermsList.length) + 5);
+  hud.innerHTML = terms.map(t => `
+    <div class="hud-term">
+      <div>
+        <div class="hud-fr">${t.fr}</div>
+        <div class="hud-en">${t.en}</div>
+      </div>
+    </div>
+  `).join('');
+  hudOffset++;
+}
+setInterval(rotateHUD, 4000);
+
+// Smooth entrance for recipe images
+document.querySelectorAll('.recipe-img-wrap img, .wine-img-wrap img').forEach(img => {
+  img.style.opacity = '0';
+  img.style.transition = 'opacity 0.6s ease';
+  img.onload = () => { img.style.opacity = '1'; };
+  if (img.complete) img.style.opacity = '1';
+});
+</script>
+</body>
+</html>
